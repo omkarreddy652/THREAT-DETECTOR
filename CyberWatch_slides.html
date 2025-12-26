@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>CyberWatch Slides</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body { font-family: Arial, Helvetica, sans-serif; background:#111; color:#eee; margin:0; }
+    .slide { display:none; padding:60px; height:100vh; box-sizing:border-box; }
+    .slide.active { display:block; }
+    .title { font-size:40px; margin-bottom:10px }
+    .subtitle { font-size:20px; color:#ccc; margin-bottom:20px }
+    .bullets { font-size:18px; margin-left:20px }
+    .footer { position:fixed; bottom:10px; right:20px; color:#888; font-size:12px }
+    .nav { position:fixed; bottom:10px; left:20px }
+    button { background:#2a2a2a; color:#fff; border:1px solid #444; padding:8px 12px; cursor:pointer }
+  </style>
+</head>
+<body>
+
+<div id="slides">
+  <div class="slide active" data-index="0">
+    <div class="title">Cyber Watch — Emotion-aware Threat Detection</div>
+    <div class="subtitle">Multimodal detection (Text | Face | Voice)</div>
+    <div class="bullets">Prototype demo: webcam + microphone + files</div>
+  </div>
+
+  <div class="slide" data-index="1">
+    <div class="title">Problem Statement</div>
+    <ul class="bullets">
+      <li>Multimodal threats: phishing, aggressive calls, suspicious video</li>
+      <li>Current tools miss emotional/context cues</li>
+      <li>Human moderators face high-volume multimedia</li>
+    </ul>
+  </div>
+
+  <div class="slide" data-index="2">
+    <div class="title">Objectives</div>
+    <ul class="bullets">
+      <li>Modular prototype for text/voice/face</li>
+      <li>Usable GUI with logging</li>
+      <li>Lightweight fallbacks and heavy-model support</li>
+      <li>Real-time monitoring & alerting</li>
+    </ul>
+  </div>
+
+  <div class="slide" data-index="3">
+    <div class="title">Methodology</div>
+    <ul class="bullets">
+      <li>Text: RoBERTa + heuristics</li>
+      <li>Voice: MFCCs + transformer ASR/emotion or RandomForest fallback</li>
+      <li>Face: YOLO / DeepFace / Haar cascade fallbacks</li>
+    </ul>
+  </div>
+
+  <div class="slide" data-index="4">
+    <div class="title">System Design</div>
+    <ul class="bullets">
+      <li>Frontend: main UI (Tkinter)</li>
+      <li>Models: voice_model.py, text_model.py</li>
+      <li>Utilities: file utils, DB history</li>
+    </ul>
+  </div>
+
+  <div class="slide" data-index="5">
+    <div class="title">Implementation Highlights</div>
+    <ul class="bullets">
+      <li>Robust GUI with theme and tooltips</li>
+      <li>VoiceThreatClassifier supports transformer & fallback</li>
+      <li>FacialEmotionAnalyzer uses multiple detection strategies</li>
+    </ul>
+  </div>
+
+  <div class="slide" data-index="6">
+    <div class="title">Demo & Results</div>
+    <ul class="bullets">
+      <li>Demo steps: voice file, webcam face analyzer, text threat popup</li>
+      <li>Results: file-based tests passed; alerts logged</li>
+    </ul>
+  </div>
+
+  <div class="slide" data-index="7">
+    <div class="title">Conclusion & Next Steps</div>
+    <ul class="bullets">
+      <li>Prototype validates multimodal detection</li>
+      <li>Next: CI, dataset, UX polish, dockerized demo</li>
+    </ul>
+  </div>
+
+</div>
+
+<div class="nav">
+  <button id="prev">Prev</button>
+  <button id="next">Next</button>
+</div>
+<div class="footer">Use ← → keys to navigate</div>
+
+<script>
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  let idx = 0;
+  function show(i){
+    slides.forEach(s=>s.classList.remove('active'));
+    slides[i].classList.add('active');
+    idx = i;
+  }
+  document.getElementById('next').addEventListener('click', ()=> show(Math.min(idx+1, slides.length-1)));
+  document.getElementById('prev').addEventListener('click', ()=> show(Math.max(idx-1, 0)));
+  document.addEventListener('keydown', (e)=>{
+    if(e.key === 'ArrowRight') show(Math.min(idx+1, slides.length-1));
+    if(e.key === 'ArrowLeft') show(Math.max(idx-1,0));
+  });
+</script>
+
+</body>
+</html>
